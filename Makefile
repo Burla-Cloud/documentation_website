@@ -1,8 +1,8 @@
 .ONESHELL:
 .SILENT:
 
-
-
+dev:
+	npx docusaurus start
 
 deploy-test:
 	set -e; \
@@ -13,9 +13,14 @@ deploy-test:
 			--repository=burla-docs \
 			2>&1 | grep -Eo '^[0-9]+' | sort -n | tail -n 1 \
 	); \
+	NEW_IMAGE_TAG=$$(($${IMAGE_TAG} + 1)); \
 	IMAGE_NAME=$$( echo \
-		us-docker.pkg.dev/burla-test/burla-docs/burla-docs:$${IMAGE_TAG} \
+		us-docker.pkg.dev/burla-test/burla-docs/burla-docs:$${NEW_IMAGE_TAG} \
 	); \
+	gcloud builds submit --tag $${IMAGE_NAME} --machine-type "E2_HIGHCPU_32"; \
+	echo "Successfully built Docker Image:"; \
+	echo "$${IMAGE_NAME}"; \
+	echo ""; \
 	gcloud run deploy burla-docs \
 	--image=$${IMAGE_NAME} \
 	--project burla-test \
