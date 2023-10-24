@@ -7,7 +7,7 @@ hide_title: True
 <br></br>
 <img src="/img/logo-2.png" width="200" height="100"/>
 
-## Welcome to Burla!
+## Welcome to joe
 
 #### Burla is, incredibly simple, completely serverless, cluster compute software.
 
@@ -62,9 +62,9 @@ Prints:
 [10, 20, 30]
 ```
 
-## Try it out!
+## Try it out! (Quickstart)
 
-Burla is incredibly simple to get up and running, here's a quick tutorial: 
+Here's a quick tutorial to get started with Burla:
 
 1. In your terminal run `pip install burla`, then run `burla login`.  
    `burla login` will create an account for you if you don't have one & authorize you to make calls to `remote_parallel_map`.
