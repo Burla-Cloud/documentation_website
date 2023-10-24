@@ -7,7 +7,7 @@ hide_title: True
 <br></br>
 <img src="/img/logo-2.png" width="200" height="100"/>
 
-## Welcome to Burla!
+## Welcome to joe
 
 #### Burla is, incredibly simple, completely serverless, cluster compute software.
 
