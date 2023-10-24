@@ -46,6 +46,12 @@ Runs provided `function_` on each item in `inputs` at the same time, in the clou
 - **image : Optional[str], default: None**
   - Optional, URI of a publicly accessible docker image. If None, Burla will attempt to copy and install the local environment on all remote machines.
 
+- **packages : Optional[List[str]], default: None**
+  - Optional, list of pip packages to install on machines where `function_` will run, If this is used packages will not be automatically detected installed.
+
+- **api_key : Optional[str], default: None**
+  - Optional, api_key, for use in situations where `burla` is deployed inside backend services, please email jake@burla.dev to have an api-key issued.
+
 ### Returns:
 - **List** :
   - Outputs returned by `function_` for every input in `inputs`, ordering of this list will not match the order of `inputs`.
