@@ -8,14 +8,14 @@ hide_title: True
 # Example: Massively Parallel Inference with Mistral-7B
 
 
-This is a quick tutorial showing how to perform parallel inference with Mistral-7B on a cluster with hundreds of GPUs (Nvidia Tesla-T4's).  
+This is a quick tutorial showing how to perform parallel inference with Mistral-7B on a cluster with hundreds of GPUs.   
 This tutorial can be adapted to use any LLM from HuggingFace.  
 This tutorial is also available as a [Google CoLab notebook](https://colab.research.google.com/drive/1I7t5QeNQT0RACJ_FcitWdYTvtGbmBj_3?usp=sharing).
 
 ### 1. Install the latest version of Burla from PyPI.
 
 Burla is an extremely simple to use cluster compute tool.  
-In this tutorial we'll use it to create a cluster with around ~200 GPU's.  
+In this tutorial we'll use it to create a cluster with around ~200 GPU's (Nvidia Tesla-T4's).  
 Currently the limit-per-cluster is 300 GPUs but this can be increased if you email jake@burla.dev!  
 Here's how you install Burla:
 
@@ -158,21 +158,19 @@ print(f"Question:\n{question_0}\n\nAnswer:\n{answer_0}")
 
 Which prints:
 
-```
-Question:
-Implement a Python function to compute the Fibonacci numbers.
+    Question:
+    Implement a Python function to compute the Fibonacci numbers.
 
-Answer:
+    Answer:
 
- Here is an example implementation of the Fibonacci function in Python:
+    Here is an example implementation of the Fibonacci function in Python:
 
-```python
-def fibonacci(n):
-    if n <= 1:
-        return n
-    
-    return fibonacci(n-1) + fibonacci(n-2)
-```
+    ```python
+    def fibonacci(n):
+        if n <= 1:
+            return n
+        
+        return fibonacci(n-1) + fibonacci(n-2)
+    ```
 
-This function computes the nth Fibonacci number, and can be used with the following input arguments: `fibonacci(0), fibonacci(1), ...`, as an example. The function returns the corresponding Fibonacci number for each input argument.
-```
+    This function computes the nth Fibonacci number, and can be used with the following input arguments: `fibonacci(0), fibonacci(1), ...`, as an example. The function returns the corresponding Fibonacci number for each input argument.
