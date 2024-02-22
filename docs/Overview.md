@@ -36,7 +36,7 @@ remote_parallel_map(my_function, my_inputs)
 - Burla **supports GPU's**.  
   Just add one argument: `remote_parallel_map(my_function, my_inputs, gpu="A100")`
 - Burla supports **custom Docker images**.  
-  Just add one argument: `remote_parallel_map(my_function, my_inputs, image="./Dockerfile")`  
+  Just add one argument: `remote_parallel_map(my_function, my_inputs, dockerfile="./Dockerfile")`  
   Containers are cached to keep latency below 1 second.
 - Burla will **automatically clone your python env**.  
   Local python environments are quickly cloned on remote machines.  
