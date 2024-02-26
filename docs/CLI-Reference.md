@@ -5,9 +5,9 @@ hide_title: True
 
 <br></br>
 
-## `burla`
+### Burla CLI Reference
 
-### Description
+#### Description
 
 The Burla Command Line Interface serves two purposes:
 
@@ -18,20 +18,20 @@ The global arg `--help` can be placed after any command or command group to see 
 
 ---
 
-## `burla login`
+### `burla login`
 
 #### Authenticate with Burla cloud.
 
-### Description
+#### Description
 
 Obtains access credentials for your user account via a web-based (OAuth2) authorization flow.  
 When this command completes successfully, an auth-token is saved in the text file `burla_credentials.json`. This file is stored in your operating systems recommended user data directory which is determined using the [appdirs](https://github.com/ActiveState/appdirs) python package.
 
 This auth-token is refreshed each time the `burla login` authorization flow is completed.
 
-## `burla nas <command>`
+### `burla nas <command>`
 
-#### Manage files stored in Burla cloud.
+##### Manage files stored in Burla cloud.
 
 Commands:
 
@@ -41,7 +41,7 @@ Commands:
 - `burla nas ls`
 - `burla nas rm`
 
-### Description
+#### Description
 
 By default, the folder `nas` (network attached storage) appears in the python working directory of all computers executing a user submitted function.  
 The filesystem in this folder is persistent and network-linked. This means:
@@ -54,7 +54,7 @@ The filesystem in this folder is persistent and network-linked. This means:
 
 Upload files to the persistent filesystem belonging to the current account.
 
-`burla nas upload` [<code><i>SOURCE</i></code>] [<code><i>DESTINATION</i></code>] [`--recursive`]
+<code>burla nas upload</code> [<code><i>SOURCE</i></code>] [<code><i>DESTINATION</i></code>] [<code>--recursive</code>]
 
 ##### POSITIONAL ARGUMENTS
 
@@ -72,7 +72,7 @@ Upload files to the persistent filesystem belonging to the current account.
 
 Download files from the persistent filesystem belonging to the current account.
 
-`burla nas download` [<code><i>SOURCE</i></code>] [<code><i>DESTINATION</i></code>] [`--recursive`]
+<code>burla nas download</code> [<code><i>SOURCE</i></code>] [<code><i>DESTINATION</i></code>] [<code>--recursive</code>]
 
 ##### POSITIONAL ARGUMENTS
 
@@ -90,7 +90,7 @@ Download files from the persistent filesystem belonging to the current account.
 
 List files and folders inside provided `path`.
 
-`burla nas ls` [<code><i>PATH</i></code>]
+<code>burla nas ls</code> [<code><i>PATH</i></code>]
 
 ##### POSITIONAL ARGUMENTS
 
@@ -101,7 +101,7 @@ List files and folders inside provided `path`.
 
 Remove file or folder from remote filesystem.
 
-`burla nas rm` [<code><i>PATH</i></code>] [`--recursive`]
+<code>burla nas rm</code> [<code><i>PATH</i></code>] [<code>--recursive</code>]
 
 ##### POSITIONAL ARGUMENTS
 
