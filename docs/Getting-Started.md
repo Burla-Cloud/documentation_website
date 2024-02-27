@@ -5,10 +5,10 @@ hide_title: True
 
 <br></br>
 
-#### Burla is not yet generally-available,
+#### Burla is currently under devlopment and is not ready to be used.
 
-The purpose of the below guide is to serve as spec currently being build to.  
-For progress updates check out our [Discord](https://discord.gg/xSuJukdS9b) or [Github](https://github.com/Burla-INC).
+To join our mailing list go to [burla.dev](https://burla.dev/).  
+If you have any questions, email me at: jake@burla.dev
 
 ## Getting Started
 
@@ -49,13 +49,13 @@ After installing google cloud's CLI, this only takes one command:
 1. [Install the gcloud CLI.](https://cloud.google.com/sdk/docs/install)
 2. Authorize your machine: `gcloud application-default login`
 
-#### Once setup on GCP, install Burla.
+#### Once setup on GCP, deploy Burla.
 
-To install the Burla webservice and associated infastructure in your google cloud project run:
+To deploy the Burla webservice and associated infastructure in your google cloud project run:
 
 1. `pip install burla`
 2. `burla login`
-3. `burla install gcp`
+3. `burla deploy gcp`
 
 This will create the following resources in your google cloud project:
 
@@ -65,7 +65,7 @@ This will create the following resources in your google cloud project:
 - An Artifact Registry repository.
 
 All resources are by default accessible only from inside your google cloud project.  
-For the `install` command to work, your user account will need permissions to access following services:
+For the `deploy` command to work, your user account will need permissions to access following services:
 
 - Compute Engine: `Compute Admin`
 - Firestore: `Cloud Datastore User`
@@ -97,6 +97,10 @@ def my_function(my_input):
 ​
 remote_parallel_map(my_function, my_inputs)
 ```
+
+To learn more about `remote_parallel_map` see our [overview](https://docs.burla.dev) or [API reference](https://docs.burla.dev/API-Reference).
+
+---
 
 Any questions?  
 [Schedule a call with us](https://cal.com/jakez/burla/), or [email us](mailto:jake@burla.dev). We're always happy to talk.

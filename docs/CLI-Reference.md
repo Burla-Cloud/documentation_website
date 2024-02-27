@@ -9,10 +9,11 @@ hide_title: True
 
 #### Description
 
-The Burla Command Line Interface serves two purposes:
+The Burla Command Line Interface serves three purposes:
 
-1. Provide the ability to authenticate with Burla cloud: `burla login`
-2. Provide the ability to manage files in Burla cloud: <code>burla nas &lt;command&gt; <strong>[</strong>options<strong>]</strong></code>
+1. Provide the ability to authenticate with Burla's cloud: `burla login`
+2. Provide the ability to deploy Burla in your cloud: `burla deploy <command>`
+3. Provide the ability to manage files in Burla's cloud: <code>burla nas &lt;command&gt; <strong>[</strong>options<strong>]</strong></code>
 
 The global arg `--help` can be placed after any command or command group to see CLI documentation.
 
@@ -28,6 +29,37 @@ Obtains access credentials for your user account via a web-based (OAuth2) author
 When this command completes successfully, an auth-token is saved in the text file `burla_credentials.json`. This file is stored in your operating systems recommended user data directory which is determined using the [appdirs](https://github.com/ActiveState/appdirs) python package.
 
 This auth-token is refreshed each time the `burla login` authorization flow is completed.
+
+### `burla deploy <command>`
+
+#### Deploy the Burla webservice and associated infastructure.
+
+Unfortunately, Burla is currently deployable only in Google-Cloud.  
+We're working hard to make Burla available on other cloud providers, to see our roadmap, check out our [Discord](https://discord.gg/xSuJukdS9b).
+
+Commands:
+
+- burla deploy gcp
+
+#### Description
+
+After completion, calls to `remote_parallel_map` will, by default, run in a cluster in your google cloud project.  
+Creates the following resources in your google cloud project:
+
+- A Firestore database instance.
+- An webservice running in Google Cloud Run.
+- A Cloud Storage Bucket.
+- An Artifact Registry repository.
+
+All resources are by default accessible only from inside your google cloud project.  
+For the `deploy` command to work, your user account will need permissions to access following services:
+
+- Compute Engine: `Compute Admin`
+- Firestore: `Cloud Datastore User`
+- Cloud Storage: `Storage Admin`
+- Artifact Registry: `Artifact Registry Administrator`
+- Cloud Run: `Cloud Run Admin`
+- Cloud Logging: `logging.logEntries.create`
 
 ### `burla nas <command>`
 
