@@ -13,9 +13,13 @@ hide_title: True
 To join our mailing list go to [burla.dev](https://burla.dev/).  
 If you have any questions, email me at: jake@burla.dev
 
+#### Goal
+
+It’s 2024, it should be trivial, even for complete beginners, to scale python over thousands of computers in the cloud, with any hardware, and any software environment. Moreover, the software used to do this, should be free and open source.
+
 #### Burla is a python package that makes it easy to run code on (lots of) other computers.
 
-In Burla, <ins>there is only one function</ins>: `remote_parallel_map`.  
+Burla only has one function: `remote_parallel_map`.  
 This function requires just two arguments, here's how it works:
 
 ```python
@@ -28,27 +32,28 @@ def my_function(my_input):
 # Arg 2: List of inputs for `my_function`
 my_inputs = [1, 2, 3, ...]
 
-# Calls `my_function` on every input in `my_inputs`, in parallel, each on a separate computer in the cloud.
+# Calls `my_function` on every input in `my_inputs`,
+# at the same time, each on a separate computer in the cloud.
 remote_parallel_map(my_function, my_inputs)
 ```
 
 - Burla is **fast** and **scalable**.  
   Code starts running within <u>1 second</u>, on up to <u>1000 CPU's</u>.
-- Burla is **free and open source software**.  
-  We offer managed service to help pay for development.
+- Running code remotely with Burla **feels like local development**. This means that:
+  - Errors thrown on remote computers are raised on your local machine.
+  - Anything you print appears in the terminal on your local machine.
+  - Your python environment is automaticaly cloned on all remote computers.  
+    This allows you to call any local python package in a function sent to `remote_parallel_map`.  
+    After installing once, environments are cached to keep latency below 1 second.
 - Burla is **easy to install**.  
-  Setup in your cloud with one command, try our managed service with two commands.
+  Try our managed service with [two commands](https://docs.burla.dev/Getting-Started#getting-started-fully-managed). Install Burla in your cloud with [three commands](https://docs.burla.dev/Getting-Started#getting-started-self-managed-gcp-only).
+- Burla supports **custom resource requirements**.  
+  Allocate up to 96 CPUs and 360G of ram to each individual function call with [two simple arguments](https://docs.burla.dev/API-Reference).
 - Burla **supports GPU's**.  
   Just add one argument: `remote_parallel_map(my_function, my_inputs, gpu="A100")`
 - Burla supports **custom Docker images**.  
   Just add one argument: `remote_parallel_map(my_function, my_inputs, dockerfile="./Dockerfile")`  
-  Containers are cached to keep latency below 1 second.
-- Burla will **automatically clone your python env**.  
-  Local python environments are quickly cloned on remote machines.  
-  Python environments are cached to keep latency below 1 second.
-- Developing code remotely with Burla **feels like local development**.  
-  Errors on raised on remote computers are re-raised locally.  
-  stdout/stderr is streamed back to your local machine in real-time.
+  After building once, images are cached to keep latency below 1 second.
 - Burla offers **simple network storage**.  
-  Remote machines are attached to the same fast, persistent, network disk.  
-  Manage files in your disk through a simple CLI: `> burla nas upload / download / ls / rm ...`
+  By default, all remote machines are attached to the same persistent network disk.  
+  Upload & download files to this disk through a simple CLI: `> burla nas upload / download / ls / rm ...`

@@ -34,7 +34,7 @@ To install Burla on your machine run:
 The `burla login` command will open a google login window in your browser.  
 If your popup protection is good, you may need to enter the url printed in the terminal in your browser.
 
-Once logged in, you'll officially have a Burla account, and can jump strait to the quickstart.
+Once logged in, you'll officially have a Burla account, and can jump strait to the [quickstart](#quickstart).
 
 ### Getting Started: Self-Managed (GCP-only)
 
