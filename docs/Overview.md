@@ -8,12 +8,7 @@ hide_title: True
 
 <img src="/img/logo_new.png" alt="burla_logo" title="Burla" width="15%" height="auto" />
 
-#### Burla is currently under devlopment and is not ready to be used.
-
-To join our mailing list go to [burla.dev](https://burla.dev/).  
-If you have any questions, email me at: jake@burla.dev
-
-#### Goal
+#### Goal:
 
 It’s 2024, it should be trivial, even for complete beginners, to scale python over thousands of computers in the cloud, with any hardware, and any software environment. Moreover, the software used to do this, should be free and open source.
 
@@ -57,3 +52,8 @@ remote_parallel_map(my_function, my_inputs)
 - Burla offers **simple network storage**.  
   By default, all remote machines are attached to the same persistent network disk.  
   Upload & download files to this disk through a simple CLI: `> burla nas upload / download / ls / rm ...`
+
+#### Burla is currently under devlopment and is not ready to be used.
+
+To join our mailing list go to [burla.dev](https://burla.dev/).  
+If you have any questions, email me at: jake@burla.dev, or [join us on Discord](https://discord.gg/xSuJukdS9b).
