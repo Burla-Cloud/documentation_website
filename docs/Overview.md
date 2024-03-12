@@ -6,7 +6,7 @@ hide_title: True
 
 <br></br>
 
-<img src="/img/logo_new.png" alt="burla_logo" title="Burla" width="15%" height="auto" />
+<img src="/img/logo.svg" alt="burla_logo" title="Burla" width="30%" height="auto" />
 
 #### Goal:
 
