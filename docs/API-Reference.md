@@ -24,7 +24,7 @@ remote_parallel_map(
 )
 ```
 
-Run provided `function_` on each item in `inputs` at the same time, in the cloud, each on a separate CPU, up to 4000 CPUs. If more than 4000 inputs are provided, inputs are queued and processed progressively.
+Run provided `function_` on each item in `inputs` at the same time, in the cloud, each on a separate CPU, up to 4000 CPUs. If more than 4000 inputs are provided, inputs are queued and processed sequentially on each worker.
 
 By default, the local python environment is cloned on all remote machines. To prevent this pass <code>packages=[]</code>.
 
@@ -97,7 +97,7 @@ By default, the local python environment is cloned on all remote machines. To pr
             <td style={{ verticalAlign: 'top' }}><code>packages</code></td>
             <td>
                 <p><code>Iterable[str]</code></p>
-                <p>(Optional) Iterable containing names of pipy packages to install in environments where <code>function_</code> is run. If <code>None</code>, Burla reverts to default behaivior, which is to clone the local python environment on all remote machines.</p>
+                <p>(Optional) Iterable containing names of pipy packages to install in environments where <code>function_</code> is run. This argument will override the default behaivior, which is to clone the local python environment on all remote machines.</p>
             </td>
         </tr>
         <tr>
