@@ -3,7 +3,7 @@ sidebar_position: 5
 hide_title: True
 ---
 
-### How Burla works.
+## How Burla works.
 
 This document gives a breif overview of the major Burla components, how they interact, and what actually happens when a request is submitted.  
 Contents:
@@ -13,16 +13,16 @@ Contents:
 3. [What happens _during_ a call to `remote_parallel_map`](#what-happens-during-a-call-to-remote_parallel_map)
 4. [What happens _after_ a call to `remote_parallel_map`](#what-happens-after-a-call-to-remote_parallel_map)
 
-##### Disclaimers:
+#### Disclaimers:
 
 _To prevent staleness this document only explains things unlikely to change in the near future._  
 _We're aware we've committed a couple architecture no-no's, and understand the implications._
 
 Last Updated: 4/9/24
 
-### TLDR / Overview:
+## TLDR / Overview:
 
-#### Components:
+### Components:
 
 Burla has four major components:
 
@@ -37,7 +37,7 @@ Burla has four major components:
 
 The three services read/write to the same central Google Cloud Firestore DB.
 
-#### Functionality:
+### Functionality:
 
 - Burla clusters are multi-tenant.
 - Nodes in a Burla cluster are single-tenant.
@@ -46,7 +46,7 @@ The three services read/write to the same central Google Cloud Firestore DB.
     This means if there are 100 possible containers and every node has 96 CPUs, each node will have 9600 containers running at all times, each bound to their own unique port.
 - When a request comes in, work is routed to the correct containers where it starts running, then all unnecessary containers are quickly killed and restarted after the request has completed.
 
-### What happens _before_ a call to `remote_parallel_map`:
+## What happens _before_ a call to `remote_parallel_map`:
 
 Somebody somewhere started a Burla cluster:
 
@@ -55,7 +55,7 @@ Somebody somewhere started a Burla cluster:
 
 Either way the process is the same, here's how a cluster is started:
 
-#### 1. Define the "standby" cluster-state
+### 1. Define the "standby" cluster-state
 
 "Standby" refers to the state of the cluster when it is waiting for incoming requests.  
 More specifically it refers to a set of nodes that should be left doing nothing (on standby).
@@ -81,7 +81,7 @@ Two types of containers that can be defined:
 Standby definitions are optional.  
 If a [main_service](https://github.com/burla-cloud/main_service) instance receives a request (someone called `remote_parallel_map`) and no standby definition is set, it will simply start VM's as needed to complete the request. Requests like this will take a few minutes to begin instead of ~1 second since vm's need to be cold-booted.
 
-#### 2. Entering "standby" (starting nodes)
+### 2. Entering "standby" (starting nodes)
 
 Once "standby" is defined, the [main_service](https://github.com/burla-cloud/main_service) must be instructed to enter this state.  
 (currently through a POST request to `/restart_cluster`)
@@ -98,15 +98,18 @@ This is what happens when a node is started:
 The [node_service](https://github.com/burla-cloud/node_service) is responsible for (in addition to other things) starting containers on open ports.  
 Every container, even user-submitted ones, already have an instance of the [container_service](https://github.com/burla-cloud/container_service) installed inside them (detailed later).
 
-### What happens _during_ a call to `remote_parallel_map`:
+## What happens _during_ a call to `remote_parallel_map`:
 
-#### 1. The [main_service](https://github.com/burla-cloud/main_service) receives a request:
+### 1. The [main_service](https://github.com/burla-cloud/main_service) receives a request:
 
-From some client (python-package) to execute some function, across some array of inputs, using some specific hardware resources.
+From some client (python-package) to execute some function, across some array of inputs, using some specific hardware/software environment.
 
-#### 2. The client (the python package) uploads inputs & the function, directly to GCS.
+### 2. The inputs & function are uploaded from the client machine.
 
-#### 3. Additional nodes are started:
+1. The [main_service](https://github.com/burla-cloud/main_service) sends the client signed GCS URLs which are used to upload the function & inputs directly to GCS from the client's machine.
+2. The [main_service](https://github.com/burla-cloud/main_service) prepares a queue of documents in the cluster's google cloud firestore database, each representing a single input. Later these documents will be popped from the queue as inputs are processed by workers.
+
+### 3. If necessary, additional nodes are started:
 
 The [main_service](https://github.com/burla-cloud/main_service) calculates, of the currently running nodes, which are compatible with with the current request? Any additional nodes necessary to reach the specified level of parallelism are started immediately. In addition, more nodes are started such that, the cluster has the same number-of/type-of nodes sitting on standby as it did before the request came in. This is to ensure that, if a new request comes in while the current one is being processed, new nodes will be ready and unoccupied so the new request can be executed quickly.
 
@@ -122,41 +125,57 @@ Here is a breif example:
 - [main_service](https://github.com/burla-cloud/main_service) will start 11 new nodes in the background.
 - The first 6 new nodes that are ready will be assigned to this job.
 
-#### 4. Python or Docker environments are constructed/replicated if necessary.
+### 4. Python or Docker environments are constructed/replicated if necessary.
 
-- If a custom docker-container was specified:  
-   The [container_service](https://github.com/burla-cloud/container_service) is installed inside it, the container is added to the standby definition, and then the container is downloaded and started on all nodes in the cluster.  
-   This container-setup process only happens the first time Burla sees a new container. Afterwards, requests begin executing within 1-second once again.
+- **If a custom docker-container was specified:** (`dockerfile` arg passed to `remote_parallel_map`)  
+   The [container_service](https://github.com/burla-cloud/container_service) is installed inside this continer, the container is added to the standby definition, and then the container is downloaded and started on all nodes in the cluster.  
+   This process only happens the first time Burla sees a new container. Afterwards, requests begin executing within 1-second once again.
 
-- If a new python environment is detected:  
-   (and a custom docker-container was **not** specified)  
-   All never-before-seen python-package/versions are installed in the default container, in parallel, inside a separate backend service. Once installed, any installed/compiled package/versions are uploaded to GCS.
+- **If a new python environment is detected:** (and a custom docker-container was **not** specified)  
+   All never-before-seen python-package/versions are installed in the default container, in parallel, using a separate backend service. The the compiled, installed package files are then uploaded to GCS.  
+   The default container is **not** saved with these new packages baked in.
 
 At this point:
 
-- Any custom-submitted containers are currently running on every Node, waiting for requests.
+- Any user-submitted containers now have the [container_service](https://github.com/burla-cloud/container_service) installed inside them.  
+  In addition these containers are now running idle on every node, waiting for requests.
 - Any python package/version a user may need is sitting (in it's compiled, default-container compatible state) inside GCS.
 
-#### 5. The [main service](https://github.com/burla-cloud/main_service) forewards the request to the appropriate nodes.
+### 5. The [main service](https://github.com/burla-cloud/main_service) forewards the request to the appropriate nodes.
 
 Effectively: A single request is sent to the node service of every node we wish to assign to this job. Nodes are single tenant, so once they receive this request, they cannot work on any other job until this one is done.
 
-#### 6. [Node services](https://github.com/burla-cloud/node_service), once receiving a request:
+### 6. A [node_service](https://github.com/burla-cloud/node_service), once receiving a request will:
 
-1.  Mount python environments if necessary:  
-    Any installed python-packages are quickly network-linked using [GCS FUSE](https://github.com/GoogleCloudPlatform/gcsfuse) to a directory in the node's filesystem. Then this directory is then mounted into relevant containers as a volume.
-2.  Foreward requests to correct containers:
+1.  **Prepare the python environment:** (if the user did not request a custom container)  
+    In order to replicate the user's python environment inside every relevant docker container running on the node (in under a second), the [node_service](https://github.com/burla-cloud/node_service) will:
+
+    1. Network-link all necessary python packages (currently stored in separate GCS directories) into a local folder on the node's filesystem. [GCS FUSE](https://github.com/GoogleCloudPlatform/gcsfuse) is used to do this.
+    2. Volume mount this directory into every relevant container's python-path.
+
+    This works because these packages have already been compiled/installed inside the default container.
+
+2.  **Foreward the request to the correct containers:**  
     A request is sent to every relevant [container_service](https://github.com/burla-cloud/container_service) telling it to start work on a specific job.
-3.  Kill unnecessary containers.  
-    All containers that are not required are killed. This is how Burla is able to quickly satisfy requests to execute functions with custom resource requirements. For example if a user requests 32CPUs per function and nodes are 96-CPU machines, 93/96 containers are killed.
 
-#### 7. [Container services](https://github.com/burla-cloud/container_service), once receiving a request:
+3.  **Kill all unnecessary containers:**  
+    All containers that are not required are killed. This is how Burla is able to quickly satisfy requests to execute functions with custom resource requirements. For example if a user requests 32CPUs per function and nodes are 96-CPU machines, 93/96 containers are killed, leaving 32 CPU's available per container.
 
-Download the function from GCS, and begin popping inputs from the queue to run through the function.  
- Anything sent to stdout is sent to the firestore database where the [main_service](https://github.com/burla-cloud/main_service) grabs it and sends it to the client.  
- Any errors thrown are also sent to the main service which forewards them to the client.
+### 7. A [container_service](https://github.com/burla-cloud/container_service), once receiving a request will:
 
-### What happens _after_ a call to `remote_parallel_map`:
+1. Download the function from GCS.
+2. Begin popping inputs from the input queue [created earlier](#2-the-inputs--function-are-uploaded-from-the-client-machine), then processing them sequentially until the queue is empty.
 
-Once the queue of inputs (being processed by indivual [container services](https://github.com/burla-cloud/container_service)) has emptied, the [main_service](https://github.com/burla-cloud/main_service) simply kills all nodes that were assigned to that job.  
-Because the [main_service](https://github.com/burla-cloud/main_service) has been maintaining the set of nodes that should be on standby there should already be new nodes running, ready to replace the ones that will be killed.
+While running user-submitted code the [container_service](https://github.com/burla-cloud/container_service) will write anything sent to stdout to the central google cloud firestore database as a new document. These logs are later read by the main service and forewarded to the client.
+
+If an error is thrown the [container_service](https://github.com/burla-cloud/container_service) will catch it, pickle it, and send it the [main_service](https://github.com/burla-cloud/main_service) which will foreward it to the client where the error can be re-raised.
+
+## What happens _after_ a call to `remote_parallel_map`:
+
+Once the queue of inputs has emptied, and all [container_service's](https://github.com/burla-cloud/container_service) report they are done, the [main_service](https://github.com/burla-cloud/main_service) simply kills all nodes that were assigned to this job.  
+Because the [main_service](https://github.com/burla-cloud/main_service) has been maintaining the set of nodes that should be on standby there should be a new set of nodes already running, or starting, that match the "standby" definition [created earlier](#1-define-the-standby-cluster-state).
+
+---
+
+Any questions?  
+[Schedule a call with us](https://cal.com/jakez/burla/), or [email us](mailto:jake@burla.dev). We're always happy to talk.
