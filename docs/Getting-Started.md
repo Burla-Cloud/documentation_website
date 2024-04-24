@@ -8,7 +8,7 @@ hide_title: True
 #### Burla is currently under devlopment and is not ready to be used.
 
 To join our mailing list go to [burla.dev](https://burla.dev/).  
-If you have any questions, email me at: jake@burla.dev, or [join us on Discord](https://discord.gg/xSuJukdS9b).
+If you have any questions, email me at: jake@burla.dev, or [join us on Discord](https://discord.gg/TsbCUwBUdy).
 
 ## Getting Started
 
@@ -39,7 +39,7 @@ Once logged in, you'll officially have a Burla account, and can jump strait to t
 ### Getting Started: Self-Managed (GCP-only)
 
 Unfortunately, Burla is currently deployable only in Google-Cloud.  
-We're working hard to make Burla available on other cloud providers, to see our roadmap, check out our [Discord](https://discord.gg/xSuJukdS9b).
+We're working hard to make Burla available on other cloud providers, to see our roadmap, check out our [Discord](https://discord.gg/TsbCUwBUdy).
 
 #### First, ensure you're authenticated with google cloud.
 

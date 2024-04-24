@@ -35,7 +35,7 @@ This auth-token is refreshed each time the `burla login` authorization flow is c
 #### Deploy the Burla webservice and associated infastructure.
 
 Unfortunately, Burla is currently deployable only in Google-Cloud.  
-We're working hard to make Burla available on other cloud providers, to see our roadmap, check out our [Discord](https://discord.gg/xSuJukdS9b).
+We're working hard to make Burla available on other cloud providers, to see our roadmap, check out our [Discord](https://discord.gg/TsbCUwBUdy).
 
 Commands:
 
