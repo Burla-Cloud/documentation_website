@@ -46,6 +46,10 @@ The three services read/write to the same central Google Cloud Firestore DB.
     This means if there are 100 possible containers and every node has 96 CPUs, each node will have 9600 containers running at all times, each bound to their own unique port.
 - When a request comes in, work is routed to the correct containers where it starts running, then all unnecessary containers are quickly killed and restarted after the request has completed.
 
+### Terminology:
+
+- We often refer to "Jobs", a "job" represents a single call to remote_parallel_map
+
 ## What happens _before_ a call to `remote_parallel_map`:
 
 Somebody somewhere started a Burla cluster:
@@ -141,7 +145,7 @@ At this point:
   In addition these containers are now running idle on every node, waiting for requests.
 - Any python package/version a user may need is sitting (in it's compiled, default-container compatible state) inside GCS.
 
-### 5. The [main service](https://github.com/burla-cloud/main_service) forewards the request to the appropriate nodes.
+### 5. The [main service](https://github.com/burla-cloud/main_service) forwards the request to the appropriate nodes.
 
 Effectively: A single request is sent to the node service of every node we wish to assign to this job. Nodes are single tenant, so once they receive this request, they cannot work on any other job until this one is done.
 
@@ -166,9 +170,9 @@ Effectively: A single request is sent to the node service of every node we wish 
 1. Download the function from GCS.
 2. Begin popping inputs from the input queue [created earlier](#2-the-inputs--function-are-uploaded-from-the-client-machine), then processing them sequentially until the queue is empty.
 
-While running user-submitted code the [container_service](https://github.com/burla-cloud/container_service) will write anything sent to stdout to the central google cloud firestore database as a new document. These logs are later read by the main service and forewarded to the client.
+While running user-submitted code the [container_service](https://github.com/burla-cloud/container_service) will write anything sent to stdout to the central google cloud firestore database as a new document. These logs are later read by the main service and forwarded to the client.
 
-If an error is thrown the [container_service](https://github.com/burla-cloud/container_service) will catch it, pickle it, and send it the [main_service](https://github.com/burla-cloud/main_service) which will foreward it to the client where the error can be re-raised.
+If an error is thrown the [container_service](https://github.com/burla-cloud/container_service) will catch it, pickle it, and send it the [main_service](https://github.com/burla-cloud/main_service) which will forward it to the client where the error can be re-raised.
 
 ## What happens _after_ a call to `remote_parallel_map`:
 
