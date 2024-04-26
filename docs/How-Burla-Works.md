@@ -159,7 +159,7 @@ Effectively: A single request is sent to the node service of every node we wish 
 
     This works because these packages have already been compiled/installed inside the default container.
 
-2.  **Foreward the request to the correct containers:**  
+2.  **Forward the request to the correct containers:**  
     A request is sent to every relevant [container_service](https://github.com/burla-cloud/container_service) telling it to start work on a specific job.
 
 3.  **Kill all unnecessary containers:**  
