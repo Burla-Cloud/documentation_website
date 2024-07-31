@@ -5,8 +5,7 @@ hide_title: True
 
 ## How Burla works.
 
-This document gives a breif overview of the major Burla components, how they interact, and what actually happens when a request is submitted.  
-Contents:
+This document gives a breif overview of the major Burla components, how they interact, and what actually happens when a request is submitted.
 
 1. [TLDR / Overview](#tldr--overview)
 2. [What happens _before_ a call to `remote_parallel_map`](#what-happens-before-a-call-to-remote_parallel_map)
@@ -15,8 +14,7 @@ Contents:
 
 #### Disclaimers:
 
-_To prevent staleness this document only explains things unlikely to change in the near future._  
-_We're aware we've committed a couple architecture no-no's, and understand the implications._
+_To prevent staleness this document only explains things unlikely to change in the near future._
 
 Last Updated: 4/9/24
 
