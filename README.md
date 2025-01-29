@@ -1,9 +1,18 @@
-## Documentation
+## This repository has been archived.<br> Burla's documentation has migrated to [GitBook](https://www.gitbook.com) (still available at [docs.burla.dev](https://docs.burla.dev)).
+
+Documentation in gitbook is synced as a collection of markdown files in the [user-docs](https://github.com/Burla-Cloud/user-docs) repo. PR's in this repo are welcome.  
+
+<br>
+<br>
+
+---
+
+### Documentation
 
 This repo contains code for Burla's documentation website: [docs.burla.dev](https://docs.burla.dev)  
 This website is built using [Docusaurus 2](https://docusaurus.io/).
 
-### Local Development
+#### Local Development
 
 ```
 $ make dev
@@ -12,7 +21,7 @@ $ make dev
 This command starts a local development server and opens up a browser window.  
 Most changes are reflected live without having to restart the server.
 
-### Build
+#### Build
 
 ```
 $ make image
@@ -20,7 +29,7 @@ $ make image
 
 This command generates static content, packages into a container, and uploads the container to Google Artifact Registry.
 
-### Deployment
+#### Deployment
 
 These commands deploy the most recently pushed container in Artifact Registry to Google Cloud Run.
 
