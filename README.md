@@ -1,6 +1,9 @@
-## This repository has been archived.<br> Burla's documentation has migrated to [GitBook](https://www.gitbook.com) (still available at [docs.burla.dev](https://docs.burla.dev)).
+## This repository has been archived.
 
-Documentation in gitbook is synced as a collection of markdown files in the [user-docs](https://github.com/Burla-Cloud/user-docs) repo. PR's in this repo are welcome.  
+### Burla's documentation is now made using [GitBook](https://www.gitbook.com).<br> Docs are still available at: [docs.burla.dev](https://docs.burla.dev).
+
+GitBook documentation is automatically synced as a collection of markdown files in the [user-docs](https://github.com/Burla-Cloud/user-docs) repo.  
+PR's in this repo are welcome and appreciated! 
 
 <br>
 <br>
